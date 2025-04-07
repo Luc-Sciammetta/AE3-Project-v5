@@ -14,7 +14,7 @@ import java.util.Stack;
 /*APPLICATION SERVICE LAYER*/
 public class ImageEditor {
 
-    private Image image;
+    public Image image;  //TODO change this to private
 
     private List<Pixel> highlightedSeam = null;
 
@@ -105,7 +105,8 @@ public class ImageEditor {
 
         @Override
         public void undo(){
-            image.addSeam(highlightedSeam); //this is either highlightedSeam or seam
+            image.removeSeam(highlightedSeam); //this is either highlightedSeam or seam
+            image.addSeam(seam);
         }
     }
 
@@ -122,7 +123,8 @@ public class ImageEditor {
 
         @Override
         public void undo(){
-            image.addSeam(highlightedSeam); //this is either highlightedSeam or seam
+            image.removeSeam(highlightedSeam);
+            image.addSeam(seam);
         }
     }
 

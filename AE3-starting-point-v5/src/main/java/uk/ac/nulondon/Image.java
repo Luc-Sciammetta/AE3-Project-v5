@@ -8,11 +8,10 @@ import java.util.List;
 import java.util.function.Function;
 
 public class Image {
-    private final List<Pixel> rows;
+    public final List<Pixel> rows; //TODO this was private
 
     private int width;
     private int height;
-
 
     public Image(BufferedImage img) {
         width = img.getWidth();
@@ -86,17 +85,9 @@ public class Image {
                 if (row == 0 || row >= rows.size() - 1 || current.left == null || current.right == null){ //top, bottom, or sides of the image
                     current.energy = current.brightness();
                 }else{
-                    Pixel above = rows.get(row - 1);
-                    Pixel below = rows.get(row + 1);
-                    for (int i = 0; i < numRights; i++){
-                        above = above.right;
-                        below = below.right;
-                    }
                     current.energy = energy(above, current, below);
                 }
                 current = current.right;
-
-                numRights += 1;
             }
         }
     }
@@ -104,7 +95,10 @@ public class Image {
     public List<Pixel> higlightSeam(List<Pixel> seam, Color color) {
         List<Pixel> originalSeam = new ArrayList<>(); //deep copy here
         for (Pixel pixel : seam) {
-            originalSeam.add(new Pixel(pixel.color));
+            Pixel newPixel = new Pixel(pixel.color);
+            newPixel.left = pixel.left;
+            newPixel.right = pixel.right;
+            originalSeam.add(newPixel);
         }
 
         int row = height - 1;
@@ -174,14 +168,7 @@ public class Image {
         List<List<Pixel>> previousSeams = new ArrayList<>();
         List<List<Pixel>> currentSeams = new ArrayList<>();
 
-
-        // Start processing from the first row
-        System.out.println("nfjkslaca");
-        for (Pixel p: rows){
-            System.out.println(p);
-        }
-
-
+        // Start processing from the first ro
         Pixel currentPixel = rows.getFirst();
         int col = 0;
         // Initialize the first row values and corresponding seams

@@ -35,6 +35,7 @@ public class Main {
             editor.removeHighlighted();
         } else {
             editor.undo();
+
         }
     }
 
@@ -53,7 +54,7 @@ public class Main {
     private void run() throws IOException {
         //Scanner is closeable, so we put it into try-with-resources
         try (Scanner scan = new Scanner(System.in)) {
-            // src/main/resources/beach.png
+          //   AE3-starting-point-v5/src/main/resources/beach.png
             System.out.println("Welcome! Enter file path");
             String filePath = scan.next();
             // import the file
@@ -74,8 +75,9 @@ public class Main {
                     default -> System.out.println("That is not a valid option.");
                 }
             }
+
             // After the user exits, export the final image
-            editor.save("target/newImg.png");
+            editor.save("AE3-starting-point-v5/target/newImg.png");
         }
     }
 
