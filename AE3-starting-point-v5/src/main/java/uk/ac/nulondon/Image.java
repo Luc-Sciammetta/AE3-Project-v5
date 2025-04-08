@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class Image {
-    public final List<Pixel> rows; //TODO this was private
+    private final List<Pixel> rows; //TODO this was private
 
     private int width;
     private int height;
@@ -53,6 +53,13 @@ public class Image {
         return height;
     }
 
+    /**
+     * Find the energy for the pixel
+     * @param above the above pixel
+     * @param current the current pixel
+     * @param below the below pixel
+     * @return the energy of the seam
+     */
     double energy(Pixel above, Pixel current, Pixel below) {
         if(above == null || below == null || current.left == null || current.right == null) {
             return current.brightness();
@@ -77,9 +84,19 @@ public class Image {
         return Math.sqrt(HorizEnergy*HorizEnergy + VertEnergy*VertEnergy);
     }
 
+    /**
+     * calculates the energy for the pixel
+     */
     public void calculateEnergy() {
         for (int row = 0; row < rows.size(); row++){
-            int numRights = 0;
+            Pixel above = rows.get(row); //above and below are set to row at the beginning to avoid index out of bounds errors
+            Pixel below = rows.get(row);
+            if(row != 0){ //we then change the value of above and below if we are not at the top or bottom of the image
+                 above = rows.get(row - 1);
+            }
+            if (row != rows.size() - 1){
+                below = rows.get(row + 1);
+            }
             Pixel current = rows.get(row);
             while (current != null){
                 if (row == 0 || row >= rows.size() - 1 || current.left == null || current.right == null){ //top, bottom, or sides of the image
@@ -87,11 +104,19 @@ public class Image {
                 }else{
                     current.energy = energy(above, current, below);
                 }
+                above = above.right;
+                below = below.right;
                 current = current.right;
             }
         }
     }
 
+    /**
+     * highlights the seam
+     * @param seam the seam to highlight
+     * @param color the color to highlight it
+     * @return return the original seam
+     */
     public List<Pixel> higlightSeam(List<Pixel> seam, Color color) {
         List<Pixel> originalSeam = new ArrayList<>(); //deep copy here
         for (Pixel pixel : seam) {
@@ -120,6 +145,10 @@ public class Image {
         return originalSeam;
     }
 
+    /**
+     * removes the seam given
+     * @param seam the given seam
+     */
     public void removeSeam(List<Pixel> seam) {
         width--;
         int row = height - 1;
@@ -137,6 +166,10 @@ public class Image {
         }
     }
 
+    /**
+     * adds the current seam
+     * @param seam to add
+     */
     public void addSeam(List<Pixel> seam) {
         width++;
 
@@ -160,6 +193,11 @@ public class Image {
         }
     }
 
+    /**
+     * Finds the max seam for the function
+     * @param valueGetter used to find the value for the pixel
+     * @return returns the seam found
+     */
     private List<Pixel> getSeamMaximizing(Function<Pixel, Double> valueGetter) {
         double[] previousValues = new double[width];
         double[] currentValues = new double[width];
@@ -168,7 +206,7 @@ public class Image {
         List<List<Pixel>> previousSeams = new ArrayList<>();
         List<List<Pixel>> currentSeams = new ArrayList<>();
 
-        // Start processing from the first ro
+        // Start processing from the first row
         Pixel currentPixel = rows.getFirst();
         int col = 0;
         // Initialize the first row values and corresponding seams
@@ -180,7 +218,7 @@ public class Image {
         }
 
         // Process all rows to compute the max-value seams
-        for(int row = 1; row < height; row++){
+        for (int row = 1; row < height; row++){
             currentPixel = rows.get(row); // get the first pixel of the current row
             col = 0;
             while (currentPixel != null){
@@ -221,7 +259,6 @@ public class Image {
         double maxVal = previousValues[0];
         int maxValIndex = 0;
 
-
         for(int i = 0 ; i < width ; i++){
             if(previousValues[i] > maxVal){
                 maxVal = previousValues[i];
@@ -233,7 +270,12 @@ public class Image {
         return previousSeams.get(maxValIndex);
     }
 
-
+    /**
+     * concat to append the pixel to start of the seam
+     * @param currentPixel the pixel to add
+     * @param previousSeams the old seam
+     * @return new seam
+     */
     public List<Pixel> concat(Pixel currentPixel, List<Pixel> previousSeams){
         // create a new Seams
         List<Pixel> newSeams = new ArrayList<>();
