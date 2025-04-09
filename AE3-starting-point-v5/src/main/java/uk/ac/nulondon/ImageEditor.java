@@ -35,18 +35,18 @@ public class ImageEditor {
      * this remote class puts this whole file together, as it is what executes each command, and also undoes it.
      */
     class Remote{
-        private ArrayDeque<Command> undoStack = new ArrayDeque<>(); //holds the commands that have been done by the user
+        ArrayDeque<Command> undoStack = new ArrayDeque<>(); //holds the commands that have been done by the user
         private Command command;
 
         public void executeCommand(Command command){ //executes a given command
             command.execute();
-            undoStack.push(command); //adds the command to the undoStack so that it can be undone if needed
         }
 
         public void undo(){ //undoes the last action
             if (!undoStack.isEmpty()){ //checks to make sure that there is an item in the stack
                 Command command = undoStack.pop(); //gets that command
                 command.undo(); //undoes the command
+                System.out.println("Undoing: " + command);
             }else{
                 System.out.println("Nothing to undo here...");
             }
@@ -78,6 +78,7 @@ public class ImageEditor {
         try {
             Command removeHighlight = new RemoveHighlighted(highlightedSeam); //creates the command
             remote.executeCommand(removeHighlight); //puts the command via the remote to actually run the command
+            remote.undoStack.push(removeHighlight); //adds the command to the undoStack so that it can be undone if needed
             save("AE3-starting-point-v5/removedSeam.png");
         } catch (Exception e) {
             throw new IOException(e);

@@ -180,13 +180,12 @@ public class Image {
             }else{
                 rows.set(row, pixel); //if the pixel needs to be added to be the front of the linked list of pixels
             }
-            if (pixel.right != null){ //it is the last pixel in the row
+            if (pixel.right != null){
                 pixel.right.left = pixel;
             }
 
             row++;
         }
-
         width++;
     }
 
