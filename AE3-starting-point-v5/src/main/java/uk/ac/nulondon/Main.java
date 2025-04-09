@@ -29,6 +29,7 @@ public class Main {
     private void energy(Scanner scan) throws IOException {
         // highlight and export intermediate image
         editor.highlightLowestEnergySeam();
+        editor.save("AE3-starting-point-v5/highlightRed.png");
         // ask for confirmation and try to execute
         System.out.println("Remove a lowest energy seam. Continue? (Y/N)");
         if ("y".equalsIgnoreCase(scan.next())) {
@@ -42,6 +43,7 @@ public class Main {
     private void greenest(Scanner scan) throws IOException {
         // highlight and export intermediate image
         editor.highlightGreenest();
+        editor.save("AE3-starting-point-v5/highlightGreen.png");
         // ask for confirmation and try to execute
         System.out.println("Remove the greenest seam. Continue? (Y/N)");
         if ("y".equalsIgnoreCase(scan.next())) {
@@ -77,7 +79,7 @@ public class Main {
             }
 
             // After the user exits, export the final image
-            editor.save("AE3-starting-point-v5/target/newImg.png");
+            editor.save("AE3-starting-point-v5/newImg.png");
         }
     }
 

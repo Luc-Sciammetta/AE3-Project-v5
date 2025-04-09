@@ -78,6 +78,7 @@ public class ImageEditor {
         try {
             Command removeHighlight = new RemoveHighlighted(highlightedSeam); //creates the command
             remote.executeCommand(removeHighlight); //puts the command via the remote to actually run the command
+            save("AE3-starting-point-v5/removedSeam.png");
         } catch (Exception e) {
             throw new IOException(e);
         }
@@ -86,6 +87,7 @@ public class ImageEditor {
     public void undo() throws IOException {
         try {
             remote.undo(); //calls the remote undo() function, which will undo the last command
+            save("AE3-starting-point-v5/undoOperation.png");
         } catch (Exception e) {
             throw new IOException(e);
         }
