@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class Image {
-    private final List<Pixel> rows; //TODO this was private
+    public final List<Pixel> rows; //TODO this was private
 
     private int width;
     private int height;
@@ -171,26 +171,22 @@ public class Image {
      * @param seam to add
      */
     public void addSeam(List<Pixel> seam) {
-        width++;
-
-        for (int row = 0; row < seam.size(); row++) {
-            Pixel seamPixel = seam.get(row);
-            Pixel rowHead = rows.get(row);
-
-            // if seamPixel should be inserted at the beginning
-            if(seamPixel.left == null){
-                seamPixel.right = rowHead;
-                if(rowHead != null) rowHead.left = seamPixel;
-                rows.set(row, seamPixel);
-            } else{
-                Pixel current = seamPixel.left.right;
-
-                // Insert seamPixel in between left and right
-                seamPixel.left.right = seamPixel;
-                seamPixel.right = current;
-                if (current != null) current.left = seamPixel;
+        List<Pixel> newSeam = seam.reversed(); //reverse the seam because the seam comes in reversed
+        int row = 0;
+        for (Pixel pixel : newSeam){
+            if (pixel.left != null){
+                pixel.left.right = pixel;
+            }else{
+                rows.set(row, pixel); //if the pixel needs to be added to be the front of the linked list of pixels
             }
+            if (pixel.right != null){ //it is the last pixel in the row
+                pixel.right.left = pixel;
+            }
+
+            row++;
         }
+
+        width++;
     }
 
     /**

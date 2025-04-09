@@ -35,7 +35,7 @@ public class ImageEditor {
      * this remote class puts this whole file together, as it is what executes each command, and also undoes it.
      */
     class Remote{
-        private Stack<Command> undoStack = new Stack<>(); //holds the commands that have been done by the user
+        private ArrayDeque<Command> undoStack = new ArrayDeque<>(); //holds the commands that have been done by the user
         private Command command;
 
         public void executeCommand(Command command){ //executes a given command
@@ -137,7 +137,30 @@ public class ImageEditor {
         @Override
         public void undo(){ //undoes the highlight by removing the seam, and then adding it again
             image.removeSeam(highlightedSeam);
+            for (int r = 0; r < image.rows.size(); r++) {
+                Pixel current = image.rows.get(r);
+                int col = 0;
+                while (current != null) {
+                    if (current.right == null) {
+                        System.out.println("Row " + r + " ends correctly at column " + col);
+                    }
+                    current = current.right;
+                    col++;
+                }
+            }
             image.addSeam(seam);
+            System.out.println();
+            for (int r = 0; r < image.rows.size(); r++) {
+                Pixel current = image.rows.get(r);
+                int col = 0;
+                while (current != null) {
+                    if (current.right == null) {
+                        System.out.println("Row " + r + " ends correctly at column " + col);
+                    }
+                    current = current.right;
+                    col++;
+                }
+            }
         }
     }
 
