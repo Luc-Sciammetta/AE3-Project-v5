@@ -29,7 +29,7 @@ public class Main {
     private void energy(Scanner scan) throws IOException {
         // highlight and export intermediate image
         editor.highlightLowestEnergySeam();
-        editor.save("AE3-starting-point-v5/highlightRed.png");
+        editor.save("highlightRed.png");
         // ask for confirmation and try to execute
         System.out.println("Remove a lowest energy seam. Continue? (Y/N)");
         if ("y".equalsIgnoreCase(scan.next())) {
@@ -43,7 +43,7 @@ public class Main {
     private void greenest(Scanner scan) throws IOException {
         // highlight and export intermediate image
         editor.highlightGreenest();
-        editor.save("AE3-starting-point-v5/highlightGreen.png");
+        editor.save("highlightGreen.png");
         // ask for confirmation and try to execute
         System.out.println("Remove the greenest seam. Continue? (Y/N)");
         if ("y".equalsIgnoreCase(scan.next())) {
@@ -56,7 +56,7 @@ public class Main {
     private void run() throws IOException {
         //Scanner is closeable, so we put it into try-with-resources
         try (Scanner scan = new Scanner(System.in)) {
-          //   AE3-starting-point-v5/src/main/resources/beach.png
+          //   src/main/resources/beach.png
             System.out.println("Welcome! Enter file path");
             String filePath = scan.next();
             // import the file
@@ -79,7 +79,7 @@ public class Main {
             }
 
             // After the user exits, export the final image
-            editor.save("AE3-starting-point-v5/newImg.png");
+            editor.save("newImg.png");
         }
     }
 
