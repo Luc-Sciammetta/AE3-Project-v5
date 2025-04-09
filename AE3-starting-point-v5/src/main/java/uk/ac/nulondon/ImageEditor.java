@@ -15,7 +15,7 @@ import java.util.Stack;
 /*APPLICATION SERVICE LAYER*/
 public class ImageEditor {
 
-    private Image image;  //TODO change this to private
+    private Image image;
 
     private List<Pixel> highlightedSeam = null;
 
@@ -137,30 +137,8 @@ public class ImageEditor {
         @Override
         public void undo(){ //undoes the highlight by removing the seam, and then adding it again
             image.removeSeam(highlightedSeam);
-            for (int r = 0; r < image.rows.size(); r++) {
-                Pixel current = image.rows.get(r);
-                int col = 0;
-                while (current != null) {
-                    if (current.right == null) {
-                        System.out.println("Row " + r + " ends correctly at column " + col);
-                    }
-                    current = current.right;
-                    col++;
-                }
-            }
             image.addSeam(seam);
-            System.out.println();
-            for (int r = 0; r < image.rows.size(); r++) {
-                Pixel current = image.rows.get(r);
-                int col = 0;
-                while (current != null) {
-                    if (current.right == null) {
-                        System.out.println("Row " + r + " ends correctly at column " + col);
-                    }
-                    current = current.right;
-                    col++;
-                }
-            }
+
         }
     }
 

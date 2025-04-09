@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class Image {
-    public final List<Pixel> rows; //TODO this was private
+    private final List<Pixel> rows;
 
     private int width;
     private int height;
@@ -89,8 +89,8 @@ public class Image {
      */
     public void calculateEnergy() {
         for (int row = 0; row < rows.size(); row++){
-            Pixel above = rows.get(row); //above and below are set to row at the beginning to avoid index out of bounds errors
-            Pixel below = rows.get(row);
+            Pixel above = null;
+            Pixel below = null;
             if(row != 0){ //we then change the value of above and below if we are not at the top or bottom of the image
                  above = rows.get(row - 1);
             }
@@ -99,13 +99,14 @@ public class Image {
             }
             Pixel current = rows.get(row);
             while (current != null){
-                if (row == 0 || row >= rows.size() - 1 || current.left == null || current.right == null){ //top, bottom, or sides of the image
-                    current.energy = current.brightness();
-                }else{
-                    current.energy = energy(above, current, below);
+                current.energy = energy(above, current, below); //set the energy of the pixel
+                //change the above, below, and current to be the next pixel
+                if (above != null){
+                    above = above.right;
                 }
-                above = above.right;
-                below = below.right;
+                if (below != null){
+                    below = below.right;
+                }
                 current = current.right;
             }
         }
